@@ -90,8 +90,4 @@ public class Pathfollowing {
         prevTime = curTime;
         prevSpeeds = targetWheelSpeeds;
     }
-
-    public void updateOdometry() {
-        m_odometry.update(Rotation2d.fromDegrees(SensorData.getYaw()), Drivetrain.getLeftDistanceMeters(), Drivetrain.getRightDistanceMeters());
-    }
 }
