@@ -39,6 +39,8 @@ public class Pathfollowing {
             System.out.println("Error retrieving trajectory!");
             e.printStackTrace();
         }
+
+        m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(SensorData.getYaw()));
     }
 
     public void initialize() {
@@ -56,7 +58,6 @@ public class Pathfollowing {
 
         SensorData.resetAngle();
 
-        m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(SensorData.getYaw()));
         leftPIDController.reset();
         rightPIDController.reset();
     }
@@ -89,5 +90,9 @@ public class Pathfollowing {
 
         prevTime = curTime;
         prevSpeeds = targetWheelSpeeds;
+    }
+
+    public void updateOdometry() {
+        m_odometry.update(Rotation2d.fromDegrees(SensorData.getYaw()), Drivetrain.getLeftDistanceMeters(), Drivetrain.getRightDistanceMeters());
     }
 }

@@ -29,6 +29,11 @@ public class Robot extends TimedRobot {
   }
 
   @Override
+  public void robotPeriodic() {
+    pathfollowing.updateOdometry();
+  }
+  
+  @Override
   public void autonomousInit() {
     pathfollowing.initialize();
   }
