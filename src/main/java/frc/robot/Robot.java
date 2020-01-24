@@ -21,16 +21,21 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
    */
+  private Drivetrain drivetrain = new Drivetrain();
+  private Pathfollowing pathfollowing = new Pathfollowing();
+
   @Override
   public void robotInit() {
   }
 
   @Override
   public void autonomousInit() {
+    pathfollowing.initialize();
   }
 
   @Override
   public void autonomousPeriodic() {
+    pathfollowing.followCenterPath();
   }
 
   @Override
@@ -39,6 +44,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    drivetrain.drivetrainPeriodic();
   }
 
   @Override
