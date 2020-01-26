@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
@@ -85,6 +86,9 @@ public class Pathfollowing {
 
         var leftOutput = leftFeedforward + leftPIDController.calculate(Drivetrain.getWheelSpeeds().leftMetersPerSecond, leftSpeedSetpoint);
         var rightOutput = rightFeedforward + rightPIDController.calculate(Drivetrain.getWheelSpeeds().rightMetersPerSecond, rightSpeedSetpoint);
+
+        SmartDashboard.putNumber("Left Voltage", leftOutput);
+        SmartDashboard.putNumber("Right Voltage", rightOutput);
 
         Drivetrain.setOutputVoltage(leftOutput, rightOutput);
 

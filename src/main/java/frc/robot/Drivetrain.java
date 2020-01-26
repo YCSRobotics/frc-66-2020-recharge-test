@@ -83,5 +83,8 @@ public class Drivetrain {
     public static void setOutputVoltage(double leftVoltage, double rightVoltage) {
         motorLeftMaster.set(ControlMode.Current, leftVoltage);
         motorRightMaster.set(ControlMode.Current, rightVoltage);
+
+        motorLeftMaster.feed();
+        motorRightMaster.feed();
     }
 }
