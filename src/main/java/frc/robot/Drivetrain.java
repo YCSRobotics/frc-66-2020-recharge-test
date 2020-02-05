@@ -53,6 +53,10 @@ public class Drivetrain {
         double turn = driverJoy.getRawAxis(XboxController.Axis.kRightX.value);
 
         diffyDrive.arcadeDrive(throttle, turn, true);
+
+        //feed motor safety
+        motorLeftMaster.feed();
+        motorRightMaster.feed();
     }
 
     public static void resetEncoders() {
@@ -81,10 +85,21 @@ public class Drivetrain {
      * @param rightVoltage
      */
     public static void setOutputVoltage(double leftVoltage, double rightVoltage) {
-        motorLeftMaster.set(ControlMode.Current, leftVoltage);
-        motorRightMaster.set(ControlMode.Current, rightVoltage);
+        var leftOutput = leftVoltage / Constants.kMaxBatVoltage;
+        var rightOutput = rightVoltage / Constants.kMaxBatVoltage;
+
+        motorLeftMaster.set(ControlMode.PercentOutput, leftOutput);
+        motorRightMaster.set(ControlMode.PercentOutput, rightOutput);
 
         motorLeftMaster.feed();
         motorRightMaster.feed();
+    }
+
+    public static void configureVoltageCompensation() {
+        motorLeftMaster.configVoltageCompSaturation(Constants.kMaxBatVoltage);
+        motorLeftMaster.enableVoltageCompensation(true);
+
+        motorRightMaster.configVoltageCompSaturation(Constants.kMaxBatVoltage);
+        motorRightMaster.enableVoltageCompensation(true);
     }
 }

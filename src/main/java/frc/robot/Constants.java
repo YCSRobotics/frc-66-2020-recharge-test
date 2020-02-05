@@ -20,6 +20,7 @@ public class Constants {
     public static final int kMotorRightMasterPort = 2;
     public static final int kMotorRightFollowerPort = 3;
 
+    public static final int kMaxBatVoltage = 12;
     // edges per revolution
     // includes gear ratio
     public static final double kTotalEdgesPerRevolution = 19516;
@@ -29,7 +30,8 @@ public class Constants {
     public static final double kvVoltSecondsPerMeter = 1.68;
     public static final double kaVoltSecondsSquaredPerMeter = 0.679;
 
-    public static final double kPDriveVel = 20.2;
+    //public static final double kPDriveVel = 20.2;
+    public static final double kPDriveVel = 1;
 
     public static final double kTrackwidthMeters = 0.65;
     public static final DifferentialDriveKinematics kDriveKinematics =

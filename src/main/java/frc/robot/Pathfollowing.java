@@ -12,9 +12,10 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
-import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystem;
 
 public class Pathfollowing {
     private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(
@@ -45,6 +46,11 @@ public class Pathfollowing {
     }
 
     public void initialize() {
+        if (trajectory == null) {
+            System.out.println("Trajectory is null!");
+            return;
+        }
+
         prevTime = 0;
         Trajectory.State initialState = trajectory.sample(0);
 
@@ -74,6 +80,7 @@ public class Pathfollowing {
 
         m_odometry.update(Rotation2d.fromDegrees(SensorData.getYaw()), Drivetrain.getLeftDistanceMeters(), Drivetrain.getRightDistanceMeters());
 
+        //System.out.println(m_odometry.getPoseMeters().toString() + " " + trajectory.sample(curTime).toString());
         var targetWheelSpeeds = Constants.kDriveKinematics.toWheelSpeeds(
                controller.calculate(m_odometry.getPoseMeters(), trajectory.sample(curTime))
         );
