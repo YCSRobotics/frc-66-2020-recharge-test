@@ -95,7 +95,7 @@ public class Drivetrain {
         motorRightMaster.feed();
     }
 
-    public static void configureVoltageCompensation() {
+    public void configureVoltageCompensation() {
         motorLeftMaster.configVoltageCompSaturation(Constants.kMaxBatVoltage);
         motorLeftMaster.enableVoltageCompensation(true);
 
