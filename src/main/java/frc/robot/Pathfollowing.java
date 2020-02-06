@@ -12,18 +12,22 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
+import io.github.oblarg.oblog.Loggable;
+import io.github.oblarg.oblog.annotations.Config;
+import io.github.oblarg.oblog.annotations.Log;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystem;
 
-public class Pathfollowing {
+public class Pathfollowing implements Loggable {
     private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(
                     Constants.ksVolts,
                     Constants.kvVoltSecondsPerMeter,
                     Constants.kaVoltSecondsSquaredPerMeter);
     private Trajectory trajectory;
     private RamseteController controller = new RamseteController();
+
     private DifferentialDriveWheelSpeeds prevSpeeds;
 
     private DifferentialDriveOdometry m_odometry;
@@ -31,8 +35,15 @@ public class Pathfollowing {
     private Timer timer = new Timer();
     private double prevTime;
 
+    @Log
     private PIDController leftPIDController = new PIDController(Constants.kPDriveVel, 0, 0);
+    @Log
     private PIDController rightPIDController = new PIDController(Constants.kPDriveVel, 0, 0);
+
+    @Log
+    private double leftOutput;
+    @Log
+    private double rightOutput;
 
     public Pathfollowing() {
         try {
@@ -73,7 +84,6 @@ public class Pathfollowing {
 
     public void followCenterPath() {
         if(trajectory == null) {
-            System.out.println("Trajectory is null!");
             return;
         }
 
@@ -82,7 +92,6 @@ public class Pathfollowing {
 
         m_odometry.update(Rotation2d.fromDegrees(SensorData.getYaw()), Drivetrain.getLeftDistanceMeters(), Drivetrain.getRightDistanceMeters());
 
-        //System.out.println(m_odometry.getPoseMeters().toString() + " " + trajectory.sample(curTime).toString());
         var targetWheelSpeeds = Constants.kDriveKinematics.toWheelSpeeds(
                controller.calculate(m_odometry.getPoseMeters(), trajectory.sample(curTime))
         );
@@ -93,11 +102,8 @@ public class Pathfollowing {
         double leftFeedforward = feedforward.calculate(leftSpeedSetpoint, (leftSpeedSetpoint - prevSpeeds.leftMetersPerSecond) / timeDifference);
         double rightFeedforward = feedforward.calculate(rightSpeedSetpoint, (rightSpeedSetpoint - prevSpeeds.rightMetersPerSecond) / timeDifference);
 
-        var leftOutput = leftFeedforward + leftPIDController.calculate(Drivetrain.getWheelSpeeds().leftMetersPerSecond, leftSpeedSetpoint);
-        var rightOutput = rightFeedforward + rightPIDController.calculate(Drivetrain.getWheelSpeeds().rightMetersPerSecond, rightSpeedSetpoint);
-
-        SmartDashboard.putNumber("Left Voltage", leftOutput);
-        SmartDashboard.putNumber("Right Voltage", rightOutput);
+        leftOutput = leftFeedforward + leftPIDController.calculate(Drivetrain.getWheelSpeeds().leftMetersPerSecond, leftSpeedSetpoint);
+        rightOutput = rightFeedforward + rightPIDController.calculate(Drivetrain.getWheelSpeeds().rightMetersPerSecond, rightSpeedSetpoint);
 
         Drivetrain.setOutputVoltage(leftOutput, rightOutput);
 

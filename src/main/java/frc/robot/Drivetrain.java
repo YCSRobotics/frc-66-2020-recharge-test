@@ -14,11 +14,13 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import io.github.oblarg.oblog.Loggable;
+import io.github.oblarg.oblog.annotations.Log;
 
 /**
  * Handles robot horizontal and vertical movement
  */
-public class Drivetrain {
+public class Drivetrain implements Loggable {
     private static WPI_TalonSRX motorLeftMaster = new WPI_TalonSRX(Constants.kMotorLeftMasterPort);
     private static WPI_TalonSRX motorLeftFollower = new WPI_TalonSRX(Constants.kMotorLeftFollowerPort);
     private static WPI_TalonSRX motorRightMaster = new WPI_TalonSRX(Constants.kMotorRightMasterPort);
@@ -28,6 +30,11 @@ public class Drivetrain {
 
     private Joystick driverJoy = JoystickOI.driverJoy;
     private Joystick operatorJoy = JoystickOI.operatorJoy;
+
+    @Log
+    private double throttle;
+    @Log
+    private double turn;
 
     public Drivetrain() {
         // only initialization values should be placed here
@@ -49,8 +56,8 @@ public class Drivetrain {
      * Handles periodic robot control of the drivetrain
      */
     public void drivetrainPeriodic() {
-        double throttle = driverJoy.getRawAxis(XboxController.Axis.kLeftY.value);
-        double turn = driverJoy.getRawAxis(XboxController.Axis.kRightX.value);
+        throttle = driverJoy.getRawAxis(XboxController.Axis.kLeftY.value);
+        turn = driverJoy.getRawAxis(XboxController.Axis.kRightX.value);
 
         diffyDrive.arcadeDrive(throttle, turn, true);
 
@@ -64,10 +71,12 @@ public class Drivetrain {
         motorRightMaster.setSelectedSensorPosition(0, 0, 10);
     }
 
+    @Log(name = "Left Distance")
     public static double getLeftDistanceMeters() {
         return motorLeftMaster.getSelectedSensorPosition() / Constants.kTotalEdgesPerRevolution;
     }
 
+    @Log(name = "Right Distance")
     public static double getRightDistanceMeters() {
         return motorRightMaster.getSelectedSensorPosition() / Constants.kTotalEdgesPerRevolution;
     }
@@ -95,7 +104,7 @@ public class Drivetrain {
         motorRightMaster.feed();
     }
 
-    public void configureVoltageCompensation() {
+    public void configureDriveMotors() {
         motorLeftMaster.configVoltageCompSaturation(Constants.kMaxBatVoltage);
         motorLeftMaster.enableVoltageCompensation(true);
 

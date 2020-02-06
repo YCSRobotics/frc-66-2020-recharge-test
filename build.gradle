@@ -40,10 +40,15 @@ deploy {
 // Set this to true to enable desktop support.
 def includeDesktopSupport = true
 
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 4.
 dependencies {
     implementation wpi.deps.wpilib()
+    implementation "com.github.Oblarg.Oblog:lib:3.1.0"
     nativeZip wpi.deps.wpilibJni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.wpilibJni(wpi.platforms.desktop)
 

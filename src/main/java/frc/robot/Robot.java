@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import io.github.oblarg.oblog.Logger;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,15 +24,18 @@ public class Robot extends TimedRobot {
    */
   private Drivetrain drivetrain = new Drivetrain();
   private Pathfollowing pathfollowing = new Pathfollowing();
+  private SensorData sensorData = new SensorData();
 
   @Override
   public void robotInit() {
-    drivetrain.configureVoltageCompensation();
+    drivetrain.configureDriveMotors();
+    Logger.configureLoggingAndConfig(this, false);
   }
 
   @Override
   public void robotPeriodic() {
     pathfollowing.updateOdometry();
+    Logger.updateEntries();
   }
   
   @Override
