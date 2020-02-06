@@ -64,6 +64,8 @@ public class Pathfollowing {
         timer.start();
 
         SensorData.resetAngle();
+        
+        m_odometry.resetPosition(trajectory.getInitialPose(), Rotation2d.fromDegrees(SensorData.getYaw()));
 
         leftPIDController.reset();
         rightPIDController.reset();

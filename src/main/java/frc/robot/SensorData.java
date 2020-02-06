@@ -11,9 +11,8 @@ public class SensorData {
     }
 
     // returns gyro "angle"
-    // no need to invert since roborio is mounted upside down
     public static double getYaw() {
-        return gyro.getYaw();
+        return -gyro.getYaw();
     }
 
     public static double getPitch() {
