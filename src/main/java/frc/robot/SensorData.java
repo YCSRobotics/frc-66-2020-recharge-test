@@ -19,6 +19,6 @@ public class SensorData implements Loggable {
 
     @Log
     public static double getPitch() {
-        return gyro.getPitch();
+        return -gyro.getPitch();
     }
 }

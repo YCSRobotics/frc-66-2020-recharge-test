@@ -23,7 +23,7 @@ public class Constants {
     public static final int kMaxBatVoltage = 12;
     // edges per revolution
     // includes gear ratio
-    public static final double kTotalEdgesPerRevolution = 19516;
+    public static final double kTotalEdgesPerRevolution = 40743;
 
     // characterization constants, all in meters
     public static final double ksVolts = 1.37;
