@@ -20,6 +20,9 @@ public class Constants {
     public static final int kMotorRightMasterPort = 2;
     public static final int kMotorRightFollowerPort = 3;
 
+    // Neo550 constants
+    public static final int kNeoDeviceID = 1;
+
     public static final int kMaxBatVoltage = 12;
     // edges per revolution
     // includes gear ratio
